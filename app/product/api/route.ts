@@ -1,5 +1,5 @@
 import { query } from "@/app/db";
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(req: any) {
     const sql = "SELECT * FROM Products ORDER BY Id DESC";
@@ -10,5 +10,26 @@ export async function GET(req: any) {
     }
     catch (error) {
         return NextResponse.json(error);
+    }
+}
+
+export async function POST(req: NextRequest) {
+    const data = await req.formData();
+    const sql = "INSERT INTO Products (Name, BuyPrice, SellPrice) VALUES (?, ?, ?)";
+    const values = [data.get("Name" || ""), data.get("BuyPrice" || ""), data.get("SellPrice" || "")];
+    
+    try {
+        await query(sql, values);
+        return NextResponse.json({
+            status : "success",
+            message : "Product added successfully",
+        });
+    }
+    catch (error) {
+        return NextResponse.json({
+            status : "error",
+            message : "Something went wrong",
+            error,
+        });
     }
 }
