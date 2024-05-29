@@ -33,3 +33,24 @@ export async function POST(req: NextRequest) {
         });
     }
 }
+
+export async function PATCH(req: NextRequest) {
+    const data = await req.formData();
+    const sql = "UPDATE Products SET Name = ?, BuyPrice = ?, SellPrice = ? WHERE Id = ?";
+    const values = [data.get("Name" || ""), data.get("BuyPrice" || ""), data.get("SellPrice" || ""), data.get("id" || "")];
+    
+    try {
+        await query(sql, values);
+        return NextResponse.json({
+            status : "success",
+            message : "Product updated successfully",
+        });
+    }
+    catch (error) {
+        return NextResponse.json({
+            status : "error",
+            message : "Something went wrong",
+            error,
+        });
+    }
+}

@@ -25,6 +25,14 @@ export default function ProductPage() {
             getProducts();
         });
     }
+
+    const handleView = async(item: any) => {
+        window.location.href = "/product/view/" + item?.id
+    }
+    
+    const handleEdit = async(item: any) => {
+        window.location.href = "/product/edit/" + item?.id
+    }
     return (
         <IonPage>
             <IonContent>
@@ -32,7 +40,9 @@ export default function ProductPage() {
                     products.map((item: any, index: number) => (
                         <IonItem key={index}>{item?.Name}
                         <IonButtons slot='end'>
-                            <IonButton onClick={() => handleDelete(item)}>Delete</IonButton>
+                            <IonButton onClick={() => handleView(item)} fill='outline'>View</IonButton>
+                            <IonButton onClick={() => handleEdit(item)} fill='outline'>Edit</IonButton>
+                            <IonButton onClick={() => handleDelete(item)} fill='outline'>Delete</IonButton>
                         </IonButtons>
                         </IonItem>
                     ))
